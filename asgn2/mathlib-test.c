@@ -5,7 +5,7 @@
 #include "mathlib.h"
 
 //define OPTIONS constant with all available command line arguments.
-#define OPTIONS "ascSCTl:"
+#define OPTIONS "ascSCTl"
 
 //main function
 int main(int argc, char **argv) {
@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
         //s: prints header and output of my_sin sin and their difference.
         case 's':
             printf("  x\t\tsin\t\tLibrary\t\tDifference\n");
-            printf("  -\t\t------\t\t-------\t\t----------\n");
+            printf("  -\t\t---\t\t-------\t\t----------\n");
             for (double x = 0.05; x<2*M_PI; x+=0.05*M_PI) {
                 double my = my_sin(x);
                 double libr = sin(x);
@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
         //c: prints header and output of my_cos cos and their difference.
         case 'c':
             printf(" x\t\tcos\t\tLibrary\t\tDifference\n");
-            printf(" -\t\t------\t\t-------\t\t----------\n");
+            printf(" -\t\t---\t\t-------\t\t----------\n");
             for (double x = 0.05; x<2*M_PI; x+=0.05*M_PI) {
                 double my = my_cos(x);
                 double libr = cos(x);
@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
         //l: prints header and output of my_log log and their difference.
         case 'l':
             printf(" x\t\tlog\t\tLibrary\t\tDifference\n");
-            printf(" -\t\t------\t\t-------\t\t----------\n");
+            printf(" -\t\t---\t\t-------\t\t----------\n");
             for (double x = 1; x<10; x+=0.05) {
                 double my = my_log(x);
                 double libr = log(x);
