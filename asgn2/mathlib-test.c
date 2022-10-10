@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
         case 's':
             printf("  x\t\tsin\t\tLibrary\t\tDifference\n");
             printf("  -\t\t---\t\t-------\t\t----------\n");
-            for (double x = 0.05; x<2*M_PI; x+=0.05*M_PI) {
+            for (double x = 0.0; x<2*M_PI; x+=0.05*M_PI) {
                 double my = my_sin(x);
                 double libr = sin(x);
                 double diff = (my>libr) ? my-libr : libr-my;
@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
         case 'c':
             printf(" x\t\tcos\t\tLibrary\t\tDifference\n");
             printf(" -\t\t---\t\t-------\t\t----------\n");
-            for (double x = 0.05; x<2*M_PI; x+=0.05*M_PI) {
+            for (double x = 0.0; x<2*M_PI; x+=0.05*M_PI) {
                 double my = my_cos(x);
                 double libr = cos(x);
                 double diff = (my>libr) ? my-libr : libr-my;
