@@ -20,22 +20,22 @@ int main(int argc, char **argv) {
         //s: prints header and output of my_sin sin and their difference.
         case 's':
             printf("  x\t\tsin\t\tLibrary\t\tDifference\n");
-            printf("  -\t\t---\t\t-------\t\t----------\n");
+            printf("  -\t\t------\t\t-------\t\t----------\n");
             for (double x = 0.0; x<=2*M_PI; x+=0.05*M_PI) {
                 double my = my_sin(x);
                 double libr = sin(x);
-                double diff = (my>libr) ? my-libr : libr-my;
+                double diff = libr-my;
                 printf(" %7.4lf % 16.9lf % 16.9lf % 16.12lf\n", x, my, libr, diff);
             }
             if (not_all) {break;}
         //c: prints header and output of my_cos cos and their difference.
         case 'c':
             printf("  x\t\tcos\t\tLibrary\t\tDifference\n");
-            printf("  -\t\t---\t\t-------\t\t----------\n");
+            printf("  -\t\t------\t\t-------\t\t----------\n");
             for (double x = 0.0; x<=2*M_PI; x+=0.05*M_PI) {
                 double my = my_cos(x);
                 double libr = cos(x);
-                double diff = (my>libr) ? my-libr : libr-my;
+                double diff = libr-my;
                 printf(" %7.4lf % 16.9lf % 16.9lf % 16.12lf\n", x, my, libr, diff);
             }
             if (not_all) {break;}
@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
             for (double x = -1; x<1; x+=0.05) {
                 double my = my_arcsin(x);
                 double libr = asin(x);
-                double diff = (my>libr) ? my-libr : libr-my;
+                double diff = libr-my;
                 printf(" %7.4lf % 16.9lf % 16.9lf % 16.12lf\n", x, my, libr, diff);
             }
             if (not_all) {break;}
@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
             for (double x = -1; x<1; x+=0.05) {
                 double my = my_arccos(x);
                 double libr = acos(x);
-                double diff = (my>libr) ? my-libr : libr-my;
+                double diff = libr-my;
                 printf(" %7.4lf % 16.9lf % 16.9lf % 16.12lf\n", x, my, libr, diff);
             }
             if (not_all) {break;}
@@ -68,18 +68,18 @@ int main(int argc, char **argv) {
             for (double x = 1; x<10; x+=0.05) {
                 double my = my_arctan(x);
                 double libr = atan(x);
-                double diff = (my>libr) ? my-libr : libr-my;
+                double diff = libr-my;
                 printf(" %7.4lf % 16.9lf % 16.9lf % 16.12lf\n", x, my, libr, diff);
             }
             if (not_all) {break;}
         //l: prints header and output of my_log log and their difference.
         case 'l':
             printf("  x\t\tlog\t\tLibrary\t\tDifference\n");
-            printf("  -\t\t---\t\t-------\t\t----------\n");
+            printf("  -\t\t------\t\t-------\t\t----------\n");
             for (double x = 1; x<10; x+=0.05) {
                 double my = my_log(x);
                 double libr = log(x);
-                double diff = (my>libr) ? my-libr : libr-my;
+                double diff = libr-my;
                 printf(" %7.4lf % 16.9lf % 16.9lf % 16.12lf\n", x, my, libr, diff);
             }
             if (not_all) {break;}
