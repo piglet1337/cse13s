@@ -90,3 +90,4 @@ double my_log(double x) {
 		curr = curr + (x-expon)/expon;
 	}
 	return curr;
+}
