@@ -1,6 +1,7 @@
 #include "dreidel.h"
 #include "mtrand.h"
 #include <stdint.h>
+#include <stdio.h>
 
 char spin_dreidel(void) {
     uint64_t random_int = mtrand_rand64() % 4;
@@ -15,6 +16,7 @@ char spin_dreidel(void) {
     case 3:
         return 'S';
     }
+    return 'N';
 }
 
 int play_game (int n_players, int coins_per_player, int * n_rounds) {
@@ -23,7 +25,7 @@ int play_game (int n_players, int coins_per_player, int * n_rounds) {
     for (int i = 0; i<n_players; i+=1) {
         play_coins[i] = coins_per_player;
     }
-    for (n_rounds = 0; 1; n_rounds +=1) {
+    while (1) {
         int winner = -1;
         for (int i=0; i<n_players; i+=1) {
             if (play_coins[i] < 0) {continue;}
@@ -34,19 +36,18 @@ int play_game (int n_players, int coins_per_player, int * n_rounds) {
                 pot = 0;
                 break;
             case 'H':
-                int half_pot = pot/2;
-                play_coins[i] += half_pot;
-                pot -= half_pot;
+                play_coins[i] += pot/2;
+                pot -= pot/2;
                 break;
             case 'N':
                 break;
             case 'S':
                 play_coins[i] -= 1;
                 if (play_coins[i] > -1) {pot += 1;}
+                // else if (print_mes){
+                //     printf("%s: elmiminated in round %d of a %d player game.", names[i], n_rounds, n_players);
+                // }
                 break;
-            }
-            if (play_coins[i] == coins_per_player * n_players) {
-                return i;
             }
             if (winner == -1) {
                 winner = i;
@@ -55,5 +56,6 @@ int play_game (int n_players, int coins_per_player, int * n_rounds) {
             winner = -2;
         }
         if (winner != -2) {return winner;}
+        *n_rounds += 1;
     }
 }
