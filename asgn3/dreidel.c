@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
+
 char spin_dreidel(void) {
     uint64_t random_int = mtrand_rand64() % 4;
     switch (random_int)
@@ -20,6 +21,16 @@ char spin_dreidel(void) {
 }
 
 int play_game (int n_players, int coins_per_player, int * n_rounds) {
+    char * names[] = {
+        "Aharon",
+        "Batsheva",
+        "Chanah",
+        "David",
+        "Ephraim",
+        "Faige",
+        "Gamaliel",
+        "Hannah",
+    };
     int pot = 0;
     int play_coins[n_players];
     for (int i = 0; i<n_players; i+=1) {
@@ -44,9 +55,9 @@ int play_game (int n_players, int coins_per_player, int * n_rounds) {
             case 'S':
                 play_coins[i] -= 1;
                 if (play_coins[i] > -1) {pot += 1;}
-                // else if (print_mes){
-                //     printf("%s: elmiminated in round %d of a %d player game.", names[i], n_rounds, n_players);
-                // }
+                else if (print_mes){
+                    printf("%s: elmiminated in round %d of a %d player game.\n", names[i], *n_rounds, n_players);
+                }
                 break;
             }
             if (winner == -1) {

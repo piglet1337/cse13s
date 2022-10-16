@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <inttypes.h>
 
+int print_mes = 0;
 //define OPTIONS constant with all available command line arguments.
 #define OPTIONS "p:c:s:v"
 
@@ -25,11 +26,9 @@ int main(int argc, char **argv) {
     int num_players = 4;
     int num_coins = 3;
     uint64_t seed = 613;
-    // int print_mes = 0;
     //takes comand line arguments and runs associated code.
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         switch (opt) {
-        //a: runs all code then returns.
         case 'p':
             num_players = atoi(optarg);
             break;
@@ -40,7 +39,7 @@ int main(int argc, char **argv) {
             seed = atoll(optarg);
             break;
         case 'v':
-            // print_mes = 1;
+            print_mes = 1;
             break;
         }
     }
