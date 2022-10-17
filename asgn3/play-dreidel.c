@@ -57,5 +57,5 @@ int main(int argc, char **argv) {
     int result = play_game(num_players, num_coins, &rounds);
     //prints results
     printf("%s %d %d %d %" PRIu64 "\n", names[result], num_players, num_coins, rounds, seed);
-    return 0;
+    return 0; 
 }
