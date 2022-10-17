@@ -47,9 +47,9 @@ int main(int argc, char **argv) {
         }
     }
     //insures inputs are in range
-    if (2 > num_players || 8 < num_players) {return 1;}
-    if (1 > num_coins || 20 < num_coins) {return 2;}
-    if (1 > seed || 9999999999 < seed) {return 3;}
+    if (2 > num_players || 8 < num_players) {exit(3);}
+    if (1 > num_coins || 20 < num_coins) {exit(4);}
+    if (1 > seed || 9999999999 < seed) {exit(5);}
     //sets seed for mtrand
     mtrand_seed(seed);
     //calls play_game counting rounds with a pointer.
