@@ -14,7 +14,7 @@ gnuplot <<END
 	set terminal pdf
 	set output "plots.pdf"
 	set zeroaxis
-    set title "Moves For Elements"
+    set title "Array where Every Other Item Needs to be Swapped with the Previous Item"
 	set xlabel "Elements"
 	set ylabel "Moves"
     plot "/tmp/graph.dat" using 1:2 with lines title "Bubble Sort", \

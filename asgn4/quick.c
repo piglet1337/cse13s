@@ -26,12 +26,5 @@ void quick_sort(Stats *stats, uint32_t *arr, uint32_t n_elements) {
     for (uint32_t i = 0; i < right_n; i += 1) {
         swap(stats, &arr[n_elements-i-1], &arr[right_n-i-1]);
     }
-    uint32_t left_n = 0;
-    for (uint32_t i = 0; i < n_elements - right_n; i += 1) {
-        if (cmp(stats, arr[i], pivot) == -1) {
-            swap(stats, &arr[left_n], &arr[i]);
-            left_n += 1;
-        }
-    }
-    quick_sort(stats, arr, left_n);
+    quick_sort(stats, arr, n_elements-right_n);
 }
