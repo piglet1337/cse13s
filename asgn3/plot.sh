@@ -21,7 +21,7 @@ do
 	./play-dreidel -p 8 -c 4 -s $i | awk '{print $1}' 
 done | sort -n | uniq -c | awk '{print $2,$1}' > position.dat 
 
-here-document that is sent to gnuplot
+#here-document that is sent to gnuplot
 gnuplot <<END
 	set terminal pdf
 	set output "plots.pdf"
