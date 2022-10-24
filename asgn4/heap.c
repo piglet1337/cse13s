@@ -35,8 +35,8 @@ static void build_heap (Stats *stats, uint32_t *a, uint32_t *heap, uint32_t n) {
 }
 
 void heap_sort(Stats *stats, uint32_t *arr, uint32_t n_elements) {
-    uint32_t heap[n_elements] = {0};
-    build_heap(stats, &arr, &heap, n_elements);
+    uint32_t heap[n_elements];
+    build_heap(stats, arr, heap, n_elements);
     for (uint32_t i = 0; i < n_elements; i += 1) {
         arr[i] = move(stats, heap[0]);
         heap[0] = move(stats, heap[n_elements - i - 1]);

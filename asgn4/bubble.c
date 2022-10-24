@@ -1,5 +1,6 @@
 #include "bubble.h"
 #include "stats.h"
+#include <stdint.h>
 
 void bubble_sort(Stats *stats, uint32_t *arr, uint32_t n_elements) {
     for (uint32_t i = 0; i < n_elements-1; i += 1) {
