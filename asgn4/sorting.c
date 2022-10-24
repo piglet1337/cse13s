@@ -34,16 +34,16 @@ int main(int argc, char **argv) {
             algorithms = set_insert(algorithms, 3);
             break;
         case 's':
-            algorithms = set_insert(algorithms, 0);
+            algorithms = set_insert(algorithms, 3);
             break;
         case 'b':
-            algorithms = set_insert(algorithms, 1);
+            algorithms = set_insert(algorithms, 0);
             break;
         case 'q':
             algorithms = set_insert(algorithms, 2);
             break;
         case 'h':
-            algorithms = set_insert(algorithms, 3);
+            algorithms = set_insert(algorithms, 1);
             break;
         case 'r':
             seed = atoll(optarg);
@@ -79,20 +79,20 @@ int main(int argc, char **argv) {
         switch (i)
         {
         case 0:
-            shell_sort(&stats, array_copy, size);
-            printf("Shell Sort, ");
-            break;
-        case 1:
             bubble_sort(&stats, array_copy, size);
             printf("Bubble Sort, ");
+            break;
+        case 1:
+            heap_sort(&stats, array_copy, size);
+            printf("Heap Sort, ");
             break;
         case 2:
             quick_sort(&stats, array_copy, size);
             printf("Quick Sort, ");
             break;
         case 3:
-            heap_sort(&stats, array_copy, size);
-            printf("Heap Sort, ");
+            shell_sort(&stats, array_copy, size);
+            printf("Shell Sort, ");
             break;
         }
         printf("%" PRIu32 " elements, %" PRIu64 " moves, %" PRIu64 " compares", size, stats.moves, stats.compares);
