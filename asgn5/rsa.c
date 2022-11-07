@@ -145,7 +145,23 @@ void rsa_encrypt(mpz_t c, mpz_t m, mpz_t e, mpz_t n) {
 // n: the public modulus.
 // e: the public exponent.
 //
-void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e);
+void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e) {
+    mpz_t k;
+    mpz_t m;
+    mpz_inits(k, m);
+    mpz_init_set_ui(k, mpz_sizeinbase(n, 2) - 1);
+    (void) mpz_fdiv_q_ui(k, k, 8);
+    uint64_t k_uint64 = mpz_get_ui(k);
+    uint8_t * array = (uint8_t *) malloc(k_uint64);
+    array[0] = 0xFF;
+    
+    while (feof(infile) == 0) {
+        uint64_t j = fread(array + 1, 1, k_uint64 - 1, infile);
+        mpz_import(m, j+1, 1, 1, 1, 0, array);
+        rsa_encrypt(m, m, e, n);
+        (void) gmp_fprintf(outfile, "%Zx\n", m);
+    }
+}
 
 //
 // Decrypts some ciphertext given an RSA private key and public modulus.
@@ -170,7 +186,24 @@ void rsa_decrypt(mpz_t m, mpz_t c, mpz_t d, mpz_t n) {
 // n: the public modulus.
 // d: the private key.
 //
-void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d);
+void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
+    mpz_t k;
+    mpz_t m;
+    mpz_t c;
+    mpz_inits(k, m, c);
+    mpz_init_set_ui(k, mpz_sizeinbase(n, 2) - 1);
+    (void) mpz_fdiv_q_ui(k, k, 8);
+    uint64_t k_uint64 = mpz_get_ui(k);
+    uint8_t * array = (uint8_t *) malloc(k_uint64);
+    
+    while (feof(infile) == 0) {
+        gmp_fscanf(infile, "%Zx\n", c);
+        rsa_decrypt(m, c, d, n);
+        uint64_t j;
+        mpz_export(array, &j, 1, 1, 1, 0, m);
+        fwrite(array + 1, 1, j - 1, outfile);
+    }
+}
 
 //
 // Signs some message given an RSA private key and public modulus.
