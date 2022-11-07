@@ -1,5 +1,6 @@
 #include "numtheory.h"
 #include "randstate.h"
+#include <stdlib.h>
 
 void gcd(mpz_t d, mpz_t a, mpz_t b) {
     while (mpz_cmp_si(b, 0)) {
@@ -52,12 +53,12 @@ void pow_mod(mpz_t o, mpz_t a, mpz_t d, mpz_t n) {
 }
 
 bool is_prime(mpz_t n, uint64_t iters) {
-    mpz_t d;
-    mpz_init(d);
-    mpz_sub_ui(d, n, 1);
+    mpz_t r;
+    mpz_init(r);
+    mpz_sub_ui(r, n, 1);
     uint64_t s = 0;
-    whle (mpz_fdiv_ui(d, 2) == 0) {
-        (void) mpz_fdiv_q_ui(d, d, 2);
+    while (mpz_fdiv_ui(r, 2) == 0) {
+        (void) mpz_fdiv_q_ui(r, r, 2);
         s += 1;
     }
     for (uint64_t i = 0; i < iters; i += 1) {

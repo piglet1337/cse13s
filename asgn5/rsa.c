@@ -1,6 +1,7 @@
 #include "rsa.h"
 #include "numtheory.h"
 #include "randstate.h"
+#include <stdlib.h>
 
 //
 // Generates the components for a new public RSA key.
@@ -36,6 +37,7 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
         mpz_urandomb(e, state, nbits);
         gcd(gcd_out, e, lambda_n);
     }
+    mpz_clears(p_1, q_1, p_times_q, lambda_n, gcd_out);
 }
 
 //
@@ -48,7 +50,9 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
 // s: the signature of the username.
 // username: the username that was signed as s.
 //
-void rsa_write_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile);
+void rsa_write_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile) {
+    gmp_fprintf(pbfile, "%Zx\n%Zx\n%Zx\n%s\n", n, e, s, username);
+}
 
 //
 // Reads a public RSA key from a file.
@@ -61,7 +65,9 @@ void rsa_write_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile);
 // username: an allocated array to hold the username.
 // pbfile: the file containing the public key
 //
-void rsa_read_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile);
+void rsa_read_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile) {
+    gmp_fscanf(pbfile, "%Zx\n%Zx\n%Zx\n%s\n", n, e, s, username);
+}
 
 //
 // Generates the components for a new private RSA key.
@@ -73,7 +79,20 @@ void rsa_read_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile);
 // p: the first large prime from the public key generation.
 // p: the second large prime from the public key generation.
 //
-void rsa_make_priv(mpz_t d, mpz_t e, mpz_t p, mpz_t q);
+void rsa_make_priv(mpz_t d, mpz_t e, mpz_t p, mpz_t q) {
+    mpz_t p_1;
+    mpz_t q_1;
+    mpz_t p_times_q;
+    mpz_t lambda_n;
+    mpz_inits(p_1, q_1, p_times_q, lambda_n);
+    mpz_sub_ui(p_1, p, 1);
+    mpz_sub_ui(q_1, q, 1);
+    mpz_mul(p_times_q, p_1, q_1);
+    gcd(lambda_n, p_1, q_1);
+    mpz_fdiv_q(lambda_n, p_times_q, lambda_n);
+    mod_inverse(d, e, lambda_n);
+    mpz_clears(p_1, q_1, p_times_q, lambda_n);
+}
 
 //
 // Writes a private RSA key to a file.
@@ -84,7 +103,9 @@ void rsa_make_priv(mpz_t d, mpz_t e, mpz_t p, mpz_t q);
 // d: the private key.
 // pvfile: the file to write the private key to.
 //
-void rsa_write_priv(mpz_t n, mpz_t d, FILE *pvfile);
+void rsa_write_priv(mpz_t n, mpz_t d, FILE *pvfile) {
+    gmp_fprintf(pvfile, "%Zx\n%Zx\n", n, d);
+}
 
 //
 // Reads a private RSA key from a file.
@@ -93,7 +114,10 @@ void rsa_write_priv(mpz_t n, mpz_t d, FILE *pvfile);
 //
 // n: will store the public modulus.
 // d: will store the private key.
-void rsa_read_priv(mpz_t n, mpz_t d, FILE *pvfile);
+void rsa_read_priv(mpz_t n, mpz_t d, FILE *pvfile) {
+    gmp_fscanf(pvfile, "%Zx", n);
+    gmp_fscanf(pvfile, "%Zx", d);
+}
 
 //
 // Encrypts a message given an RSA public exponent and modulus.
@@ -104,7 +128,9 @@ void rsa_read_priv(mpz_t n, mpz_t d, FILE *pvfile);
 // e: the public exponent.
 // n: the public modulus.
 //
-void rsa_encrypt(mpz_t c, mpz_t m, mpz_t e, mpz_t n);
+void rsa_encrypt(mpz_t c, mpz_t m, mpz_t e, mpz_t n) {
+    pow_mod(c, m, e , n);
+}
 
 //
 // Encrypts an entire file given an RSA public modulus and exponent.

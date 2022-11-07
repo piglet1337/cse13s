@@ -1,4 +1,5 @@
 #include "randstate.h"
+#include <stdlib.h>
 
 void randstate_init(uint64_t seed) {
     (void) srandom(seed);
