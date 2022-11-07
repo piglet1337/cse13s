@@ -37,7 +37,7 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
         mpz_urandomb(e, state, nbits);
         gcd(gcd_out, e, lambda_n);
     }
-    mpz_clears(p_1, q_1, p_times_q, lambda_n, gcd_out);
+    // mpz_clears(p_1, q_1, p_times_q, lambda_n, gcd_out);
 }
 
 //
@@ -94,7 +94,7 @@ void rsa_make_priv(mpz_t d, mpz_t e, mpz_t p, mpz_t q) {
     gcd(lambda_n, p_1, q_1);
     mpz_fdiv_q(lambda_n, p_times_q, lambda_n);
     mod_inverse(d, e, lambda_n);
-    mpz_clears(p_1, q_1, p_times_q, lambda_n);
+    // mpz_clears(p_1, q_1, p_times_q, lambda_n);
 }
 
 //
@@ -156,7 +156,9 @@ void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e);
 // d: the private key.
 // n: the public modulus.
 //
-void rsa_decrypt(mpz_t m, mpz_t c, mpz_t d, mpz_t n);
+void rsa_decrypt(mpz_t m, mpz_t c, mpz_t d, mpz_t n) {
+    pow_mod(m, c, d , n);
+}
 
 //
 // Decrypts an entire file given an RSA public modulus and private key.
@@ -179,7 +181,9 @@ void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d);
 // d: the private key.
 // n: the public modulus.
 //
-void rsa_sign(mpz_t s, mpz_t m, mpz_t d, mpz_t n);
+void rsa_sign(mpz_t s, mpz_t m, mpz_t d, mpz_t n) {
+    pow_mod(s, m, d , n);
+}
 
 //
 // Verifies some signature given an RSA public exponent and modulus.
@@ -192,4 +196,14 @@ void rsa_sign(mpz_t s, mpz_t m, mpz_t d, mpz_t n);
 // n: the public modulus.
 // returns: true if signature is verified, false otherwise.
 //
-bool rsa_verify(mpz_t m, mpz_t s, mpz_t e, mpz_t n);
+bool rsa_verify(mpz_t m, mpz_t s, mpz_t e, mpz_t n) {
+    mpz_t t;
+    mpz_init(t);
+    pow_mod(t, s, e, n);
+    if (mpz_cmp(t, m)) {
+        mpz_clear(t);
+        return false;
+    }
+    // mpz_clear(t);
+    return true;
+}

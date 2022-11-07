@@ -1,6 +1,7 @@
 #include "numtheory.h"
 #include "randstate.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void gcd(mpz_t d, mpz_t a, mpz_t b) {
     while (mpz_cmp_si(b, 0)) {
@@ -21,26 +22,32 @@ void mod_inverse(mpz_t o, mpz_t a, mpz_t n) {
     mpz_init_set_si(t_prime, 1);
     while (mpz_cmp_si(r_prime, 0)) {
         mpz_t q;
+        mpz_t temp;
+        mpz_init(temp);
         mpz_init(q);
         mpz_fdiv_q(q, r, r_prime);
-        mpz_set(r, r_prime);
+        mpz_set(temp, r_prime);
         mpz_mul(r_prime, q, r_prime);
         mpz_sub(r_prime, r, r_prime);
-        mpz_set(t, t_prime);
+        mpz_set(r, temp);
+        mpz_set(temp, t_prime);
         mpz_mul(t_prime, q, t_prime);
         mpz_sub(t_prime, t, t_prime);
+        mpz_set(t, temp);
+        // mpz_clears(q, temp);
     }
     if (mpz_cmp_si(r, 1) > 0) {return;}
     if (mpz_cmp_si(t, 0) < 0) {mpz_add(t, t, n);}
     mpz_set(o, t);
+    // mpz_clears(r, r_prime, t, t_prime);
 }
 
 void pow_mod(mpz_t o, mpz_t a, mpz_t d, mpz_t n) {
     mpz_t v;
-    mpz_init_set_si(v, 1);
+    mpz_init_set_ui(v, 1);
     mpz_t p;
     mpz_init_set(p, a);
-    while (mpz_cmp_si(d, 0) > 0) {
+    while (mpz_cmp_ui(d, 0) > 0) {
         if (mpz_fdiv_ui(d, 2)==1) {
             mpz_mul(v, v, p);
             mpz_mod(v, v, n);
@@ -50,6 +57,7 @@ void pow_mod(mpz_t o, mpz_t a, mpz_t d, mpz_t n) {
         (void) mpz_fdiv_q_ui(d, d, 2);
     }
     mpz_set(o, v);
+    // mpz_clears(v, p);
 }
 
 bool is_prime(mpz_t n, uint64_t iters) {
@@ -85,21 +93,19 @@ bool is_prime(mpz_t n, uint64_t iters) {
             }
             if (mpz_cmp(y, n_1)) {return false;}
         }
+        // mpz_clears(a, temp, y, n_1);
     }
+    // mpz_clear(r);
     return true;
 }
 
 void make_prime(mpz_t p, uint64_t bits, uint64_t iters) {
-    mpz_t last_bit;
-    mpz_init_set_ui(last_bit, 2);
-    for (uint64_t i = 2; i < bits; i += 1) {
-        mpz_mul_ui(last_bit, last_bit, 2);
-    }
+    mpz_set_ui(p, 80);
+    mpz_t bitwise;
+    mpz_init_set_ui(bitwise, 1);
     while (!is_prime(p, iters)) {
-        mpz_urandomb(p, state, bits);
-        mpz_t bitwise;
-        mpz_init_set_ui(bitwise, 1);
-        mpz_and(p, p, bitwise);
-        mpz_and(p, p, last_bit);
+        mpz_rrandomb(p, state, bits);
+        mpz_ior(p, p, bitwise);
     }
+    // mpz_clears(last_bit, bitwise);
 }
