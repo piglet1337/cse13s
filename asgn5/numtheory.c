@@ -90,15 +90,16 @@ bool is_prime(mpz_t n, uint64_t iters) {
 }
 
 void make_prime(mpz_t p, uint64_t bits, uint64_t iters) {
-    uint64_t last_bit = 2;
+    mpz_t last_bit;
+    mpz_init_set_ui(last_bit, 2);
     for (uint64_t i = 2; i < bits; i += 1) {
-        last_bit *= 2;
+        mpz_mul_ui(last_bit, last_bit, 2);
     }
-    mpz_set_ui(p, 0);
     while (!is_prime(p, iters)) {
-        uint64_t prime_canidate = gmp_urandomb_ui(state, bits);
-        prime_canidate &= last_bit;
-        prime_canidate &= 0x1;
-        mpz_set_ui(p, prime_canidate);
+        mpz_urandomb(p, state, bits);
+        mpz_t bitwise;
+        mpz_init_set_ui(bitwise, 1);
+        mpz_and(p, p, bitwise);
+        mpz_and(p, p, last_bit);
     }
 }

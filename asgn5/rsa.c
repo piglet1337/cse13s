@@ -66,7 +66,10 @@ void rsa_write_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile) {
 // pbfile: the file containing the public key
 //
 void rsa_read_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile) {
-    gmp_fscanf(pbfile, "%Zx\n%Zx\n%Zx\n%s\n", n, e, s, username);
+    gmp_fscanf(pbfile, "%Zx", n);
+    gmp_fscanf(pbfile, "%Zx", e);
+    gmp_fscanf(pbfile, "%Zx", s);
+    gmp_fscanf(pbfile, "%s", username);
 }
 
 //
