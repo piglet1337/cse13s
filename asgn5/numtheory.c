@@ -9,6 +9,7 @@ void gcd(mpz_t d, mpz_t a, mpz_t b) {
         mpz_mod(b, a, b);
         mpz_set(a, d);
     }
+    mpz_set(d, a);
 }
 
 void mod_inverse(mpz_t o, mpz_t a, mpz_t n) {
@@ -34,12 +35,12 @@ void mod_inverse(mpz_t o, mpz_t a, mpz_t n) {
         mpz_mul(t_prime, q, t_prime);
         mpz_sub(t_prime, t, t_prime);
         mpz_set(t, temp);
-        // mpz_clears(q, temp);
+        mpz_clears(q, temp, NULL);
     }
     if (mpz_cmp_si(r, 1) > 0) {return;}
     if (mpz_cmp_si(t, 0) < 0) {mpz_add(t, t, n);}
     mpz_set(o, t);
-    // mpz_clears(r, r_prime, t, t_prime);
+    mpz_clears(r, r_prime, t, t_prime, NULL);
 }
 
 void pow_mod(mpz_t o, mpz_t a, mpz_t d, mpz_t n) {
@@ -57,7 +58,7 @@ void pow_mod(mpz_t o, mpz_t a, mpz_t d, mpz_t n) {
         (void) mpz_fdiv_q_ui(d, d, 2);
     }
     mpz_set(o, v);
-    // mpz_clears(v, p);
+    mpz_clears(v, p, NULL);
 }
 
 bool is_prime(mpz_t n, uint64_t iters) {
@@ -93,9 +94,9 @@ bool is_prime(mpz_t n, uint64_t iters) {
             }
             if (mpz_cmp(y, n_1)) {return false;}
         }
-        // mpz_clears(a, temp, y, n_1);
+        mpz_clears(a, temp, y, n_1, NULL);
     }
-    // mpz_clear(r);
+    mpz_clear(r);
     return true;
 }
 
@@ -104,8 +105,11 @@ void make_prime(mpz_t p, uint64_t bits, uint64_t iters) {
     mpz_t bitwise;
     mpz_init_set_ui(bitwise, 1);
     while (!is_prime(p, iters)) {
-        mpz_rrandomb(p, state, bits);
+        mpz_urandomb(p, state, bits);
         mpz_ior(p, p, bitwise);
+        if (mpz_tstbit(p, bits-1)) {
+            mpz_combit(p, bits-1);
+        }
     }
-    // mpz_clears(last_bit, bitwise);
+    mpz_clear(bitwise);
 }

@@ -27,7 +27,7 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
     mpz_t p_times_q;
     mpz_t lambda_n;
     mpz_t gcd_out;
-    mpz_inits(p_1, q_1, p_times_q, lambda_n, gcd_out);
+    mpz_inits(p_1, q_1, p_times_q, lambda_n, gcd_out, NULL);
     mpz_sub_ui(p_1, p, 1);
     mpz_sub_ui(q_1, q, 1);
     mpz_mul(p_times_q, p_1, q_1);
@@ -37,7 +37,7 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
         mpz_urandomb(e, state, nbits);
         gcd(gcd_out, e, lambda_n);
     }
-    // mpz_clears(p_1, q_1, p_times_q, lambda_n, gcd_out);
+    mpz_clears(p_1, q_1, p_times_q, lambda_n, gcd_out, NULL);
 }
 
 //
@@ -87,14 +87,14 @@ void rsa_make_priv(mpz_t d, mpz_t e, mpz_t p, mpz_t q) {
     mpz_t q_1;
     mpz_t p_times_q;
     mpz_t lambda_n;
-    mpz_inits(p_1, q_1, p_times_q, lambda_n);
+    mpz_inits(p_1, q_1, p_times_q, lambda_n, NULL);
     mpz_sub_ui(p_1, p, 1);
     mpz_sub_ui(q_1, q, 1);
     mpz_mul(p_times_q, p_1, q_1);
     gcd(lambda_n, p_1, q_1);
     mpz_fdiv_q(lambda_n, p_times_q, lambda_n);
     mod_inverse(d, e, lambda_n);
-    // mpz_clears(p_1, q_1, p_times_q, lambda_n);
+    mpz_clears(p_1, q_1, p_times_q, lambda_n, NULL);
 }
 
 //
@@ -148,7 +148,7 @@ void rsa_encrypt(mpz_t c, mpz_t m, mpz_t e, mpz_t n) {
 void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e) {
     mpz_t k;
     mpz_t m;
-    mpz_inits(k, m);
+    mpz_inits(k, m, NULL);
     mpz_init_set_ui(k, mpz_sizeinbase(n, 2) - 1);
     (void) mpz_fdiv_q_ui(k, k, 8);
     uint64_t k_uint64 = mpz_get_ui(k);
@@ -161,6 +161,8 @@ void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e) {
         rsa_encrypt(m, m, e, n);
         (void) gmp_fprintf(outfile, "%Zx\n", m);
     }
+    free(array);
+    mpz_clears(k, m, NULL);
 }
 
 //
@@ -190,7 +192,7 @@ void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
     mpz_t k;
     mpz_t m;
     mpz_t c;
-    mpz_inits(k, m, c);
+    mpz_inits(k, m, c, NULL);
     mpz_init_set_ui(k, mpz_sizeinbase(n, 2) - 1);
     (void) mpz_fdiv_q_ui(k, k, 8);
     uint64_t k_uint64 = mpz_get_ui(k);
@@ -203,6 +205,8 @@ void rsa_decrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t d) {
         mpz_export(array, &j, 1, 1, 1, 0, m);
         fwrite(array + 1, 1, j - 1, outfile);
     }
+    free(array);
+    mpz_clears(k, m, c, NULL);
 }
 
 //
@@ -237,6 +241,6 @@ bool rsa_verify(mpz_t m, mpz_t s, mpz_t e, mpz_t n) {
         mpz_clear(t);
         return false;
     }
-    // mpz_clear(t);
+    mpz_clear(t);
     return true;
 }

@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
     randstate_init(seed);
     //make public and private keys.
     mpz_t p, q, n, e, d, username, s;
-    mpz_inits(p, q, n, e, d, username, s);
+    mpz_inits(p, q, n, e, d, username, s, NULL);
     rsa_make_pub(p, q, n, e, bit_count, iterations);
     rsa_make_priv(d, e, p, q);
     //get current username.
@@ -88,11 +88,11 @@ int main(int argc, char **argv) {
     rsa_write_pub(n, e, s, user, pbkey);
     //print to stderr if verbose is enabled.
     if (verbose) {
-        gmp_fprintf(stderr, "username: %s\nuser signature (%d bits): %Zd\np (%d bits): %Zd\nq (%d bits): %Zd\nn - modulus (%d bits): %Zd\ne - public exponent (%d bits): %Zd\nd - private exponent (%d bits): %Zd\n", user, mpz_sizeinbase(s, 2), s, mpz_sizeinbase(p, 2), p, mpz_sizeinbase(q, 2), q, mpz_sizeinbase(n, 2), n, mpz_sizeinbase(e, 2), e, mpz_sizeinbase(d, 2), d);
+        gmp_fprintf(stderr, "username: %s\nuser signature (%u bits): %Zd\np (%u bits): %Zd\nq (%u bits): %Zd\nn - modulus (%u bits): %Zd\ne - public exponent (%u bits): %Zd\nd - private exponent (%u bits): %Zd\n", user, mpz_sizeinbase(s, 2), s, mpz_sizeinbase(p, 2), p, mpz_sizeinbase(q, 2), q, mpz_sizeinbase(n, 2), n, mpz_sizeinbase(e, 2), e, mpz_sizeinbase(d, 2), d);
     }
     //close files, clear random state, and clear mpz_t variables.
     fclose(pvkey);
     fclose(pbkey);
     randstate_clear();
-    mpz_clears(p, q, n, e, d, username, s);
+    mpz_clears(p, q, n, e, d, username, s, NULL);
 }
