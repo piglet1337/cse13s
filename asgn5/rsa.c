@@ -36,6 +36,7 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
     while (mpz_cmp_ui(gcd_out, 1)) {
         mpz_urandomb(e, state, nbits);
         gcd(gcd_out, e, lambda_n);
+        if (mpz_cmp_ui(gcd_out, 1) == 0) {break;}
     }
     mpz_clears(p_1, q_1, p_times_q, lambda_n, gcd_out, NULL);
 }
