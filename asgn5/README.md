@@ -31,4 +31,3 @@ Usage: ./decrypt [options]
     -n <keyfile>: Private key is in <keyfile>. Default: rsa.priv.  
     -v          : Enable verbose output.  
     -h          : Display program synopsis and usage.  
-  
