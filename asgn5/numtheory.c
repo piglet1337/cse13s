@@ -4,12 +4,16 @@
 #include <stdio.h>
 
 void gcd(mpz_t d, mpz_t a, mpz_t b) {
+    mpz_t temp_a, temp_b;
+    mpz_init_set(temp_a, a);
+    mpz_init_set(temp_b, b);
     while (mpz_cmp_si(b, 0)) {
-        mpz_set(d, b);
-        mpz_mod(b, a, b);
-        mpz_set(a, d);
+        mpz_set(d, temp_b);
+        mpz_mod(temp_b, temp_a, temp_b);
+        mpz_set(temp_a, d);
     }
     mpz_set(d, a);
+    mpz_clears(temp_a, temp_b, NULL);
 }
 
 void mod_inverse(mpz_t o, mpz_t a, mpz_t n) {
@@ -48,17 +52,19 @@ void pow_mod(mpz_t o, mpz_t a, mpz_t d, mpz_t n) {
     mpz_init_set_ui(v, 1);
     mpz_t p;
     mpz_init_set(p, a);
-    while (mpz_cmp_ui(d, 0) > 0) {
-        if (mpz_fdiv_ui(d, 2)==1) {
+    mpz_t temp_d;
+    mpz_init_set(temp_d, d);
+    while (mpz_cmp_ui(temp_d, 0) > 0) {
+        if (mpz_fdiv_ui(temp_d, 2)==1) {
             mpz_mul(v, v, p);
             mpz_mod(v, v, n);
         }
         mpz_mul(p, p, p);
         mpz_mod(p, p, n);
-        (void) mpz_fdiv_q_ui(d, d, 2);
+        (void) mpz_fdiv_q_ui(temp_d, temp_d, 2);
     }
     mpz_set(o, v);
-    mpz_clears(v, p, NULL);
+    mpz_clears(v, p, temp_d, NULL);
 }
 
 bool is_prime(mpz_t n, uint64_t iters) {
@@ -71,12 +77,10 @@ bool is_prime(mpz_t n, uint64_t iters) {
         s += 1;
     }
     for (uint64_t i = 0; i < iters; i += 1) {
-        mpz_t a;
-        mpz_init(a);
-        mpz_sub_ui(a, n, 4);
-        mpz_t temp;
-        mpz_init_set_ui(temp, random());
-        mpz_mod(a, temp, a);
+        mpz_t a, temp;
+        mpz_inits(a, temp, NULL);
+        mpz_sub_ui(temp, n, 2);
+        mpz_urandomm(a, state, temp);
         mpz_add_ui(a, a, 2);
         mpz_t y;
         mpz_init(y);

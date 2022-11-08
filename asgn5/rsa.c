@@ -67,10 +67,7 @@ void rsa_write_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile) {
 // pbfile: the file containing the public key
 //
 void rsa_read_pub(mpz_t n, mpz_t e, mpz_t s, char username[], FILE *pbfile) {
-    gmp_fscanf(pbfile, "%Zx", n);
-    gmp_fscanf(pbfile, "%Zx", e);
-    gmp_fscanf(pbfile, "%Zx", s);
-    gmp_fscanf(pbfile, "%s", username);
+    gmp_fscanf(pbfile, "%Zx\n%Zx\n%Zx\n%s", n, e, s, username);
 }
 
 //
@@ -149,18 +146,17 @@ void rsa_encrypt(mpz_t c, mpz_t m, mpz_t e, mpz_t n) {
 void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e) {
     mpz_t k;
     mpz_t m;
-    mpz_inits(k, m, NULL);
-    mpz_init_set_ui(k, mpz_sizeinbase(n, 2) - 1);
+    mpz_t result;
+    mpz_inits(k, m, result, NULL);
+    mpz_init_set_ui(k, (mpz_sizeinbase(n, 2) - 1));
     (void) mpz_fdiv_q_ui(k, k, 8);
-    uint64_t k_uint64 = mpz_get_ui(k);
-    uint8_t * array = (uint8_t *) malloc(k_uint64);
+    uint8_t * array = (uint8_t *) malloc(mpz_get_ui(k));
     array[0] = 0xFF;
-    
     while (feof(infile) == 0) {
-        uint64_t j = fread(array + 1, 1, k_uint64 - 1, infile);
+        uint64_t j = fread(array + 1, 1, mpz_get_ui(k) - 1, infile);
         mpz_import(m, j+1, 1, 1, 1, 0, array);
-        rsa_encrypt(m, m, e, n);
-        (void) gmp_fprintf(outfile, "%Zx\n", m);
+        rsa_encrypt(result, m, e, n);
+        (void) gmp_fprintf(outfile, "%Zx\n", result);
     }
     free(array);
     mpz_clears(k, m, NULL);

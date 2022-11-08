@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
     //read public key from opened file.
     mpz_t n, e, s, username;
     mpz_inits(n, e, s, username, NULL);
-    char *user = "";
+    char user[33];
     rsa_read_pub(n, e, s, user, pbkey);
     //print to stderr if verbose is enabled.
     if (verbose) {
@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
     //convert username into mpz_t.
     mpz_set_str(username, user, 62);
     if (!rsa_verify(username, s, e, n)) {
-        gmp_fprintf(stderr, "Couldn't verify user signature - exiting");
+        gmp_fprintf(stderr, "Couldn't verify user signature - exiting\n");
         exit(0);
     }
     //encrypt file.
