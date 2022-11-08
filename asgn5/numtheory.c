@@ -107,17 +107,16 @@ bool is_prime(mpz_t n, uint64_t iters) {
 
 //generates a random prime number p that is bits bits long. iters defines the amount of iterations for is_prime.
 void make_prime(mpz_t p, uint64_t bits, uint64_t iters) {
-    mpz_set_ui(p, 80);
     mpz_t bitwise, last_bit;
     mpz_init_set_ui(bitwise, 1);
     mpz_init_set_ui(last_bit, 2);
     for (uint64_t i = 2; i < bits; i += 1) {
         mpz_mul_ui(last_bit, last_bit, 2);
     }
-    while (!is_prime(p, iters)) {
+    do {
         mpz_urandomb(p, state, bits);
         mpz_ior(p, p, bitwise);
         mpz_ior(p, p, last_bit);
-    }
+    } while (!is_prime(p, iters));
     mpz_clears(bitwise, last_bit, NULL);
 }
