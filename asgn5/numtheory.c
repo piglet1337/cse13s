@@ -7,14 +7,15 @@
 //finds greatest common denominator of a and b and sets d equal to it. 
 void gcd(mpz_t d, mpz_t a, mpz_t b) {
     mpz_t temp_a, temp_b;
-    mpz_init_set(temp_a, a);
-    mpz_init_set(temp_b, b);
-    while (mpz_cmp_si(b, 0)) {
+    mpz_inits(temp_a, temp_b, NULL);
+    mpz_set(temp_a, a);
+    mpz_set(temp_b, b);
+    while (mpz_cmp_si(temp_b, 0)) {
         mpz_set(d, temp_b);
         mpz_mod(temp_b, temp_a, temp_b);
         mpz_set(temp_a, d);
     }
-    mpz_set(d, a);
+    mpz_set(d, temp_a);
     mpz_clears(temp_a, temp_b, NULL);
 }
 
