@@ -39,10 +39,10 @@ int main(int argc, char **argv) {
             verbose = 1;
             break;
         case 'h':
-            fprintf(stderr, "Usage: ./encrypt-dist [options]\n  ./encrypt-dist encrypts an input file using the specified public key file,\n  writing the result to the specified output file.\n    -i <infile> : Read input from <infile>. Default: standard input.\n    -o <outfile>: Write output to <outfile>. Default: standard output.\n    -n <keyfile>: Public key is in <keyfile>. Default: rsa.pub.\n    -v          : Enable verbose output.\n    -h          : Display program synopsis and usage.\n");
+            fprintf(stderr, "Usage: ./encrypt [options]\n  ./encrypt encrypts an input file using the specified public key file,\n  writing the result to the specified output file.\n    -i <infile> : Read input from <infile>. Default: standard input.\n    -o <outfile>: Write output to <outfile>. Default: standard output.\n    -n <keyfile>: Public key is in <keyfile>. Default: rsa.pub.\n    -v          : Enable verbose output.\n    -h          : Display program synopsis and usage.\n");
             break;
         default:
-            fprintf(stderr, "Usage: ./encrypt-dist [options]\n  ./encrypt-dist encrypts an input file using the specified public key file,\n  writing the result to the specified output file.\n    -i <infile> : Read input from <infile>. Default: standard input.\n    -o <outfile>: Write output to <outfile>. Default: standard output.\n    -n <keyfile>: Public key is in <keyfile>. Default: rsa.pub.\n    -v          : Enable verbose output.\n    -h          : Display program synopsis and usage.\n");
+            fprintf(stderr, "Usage: ./encrypt [options]\n  ./encrypt encrypts an input file using the specified public key file,\n  writing the result to the specified output file.\n    -i <infile> : Read input from <infile>. Default: standard input.\n    -o <outfile>: Write output to <outfile>. Default: standard output.\n    -n <keyfile>: Public key is in <keyfile>. Default: rsa.pub.\n    -v          : Enable verbose output.\n    -h          : Display program synopsis and usage.\n");
             break;
         }
     }

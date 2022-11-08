@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <sys/stat.h>
+#include <inttypes.h>
 
 //Define OPTIONS constant
 #define OPTIONS "b:i:n:d:s:vh"
@@ -48,10 +49,10 @@ int main(int argc, char **argv) {
             verbose = 1;
             break;
         case 'h':
-            fprintf(stderr, "Usage: ./keygen-dist [options]\n  ./keygen-dist generates a public / private key pair, placing the keys into the public and private\n  key files as specified below. The keys have a modulus (n) whose length is specified in\n  the program options.\n    -s <seed>   : Use <seed> as the random number seed. Default: time()\n    -b <bits>   : Public modulus n must have at least <bits> bits. Default: 1024\n    -i <iters>  : Run <iters> Miller-Rabin iterations for primality testing. Default: 50\n    -n <pbfile> : Public key file is <pbfile>. Default: rsa.pub\n    -d <pvfile> : Private key file is <pvfile>. Default: rsa.priv\n    -v          : Enable verbose output.\n    -h          : Display program synopsis and usage.\n");
+            fprintf(stderr, "Usage: ./keygen [options]\n  ./keygen generates a public / private key pair, placing the keys into the public and private\n  key files as specified below. The keys have a modulus (n) whose length is specified in\n  the program options.\n    -s <seed>   : Use <seed> as the random number seed. Default: time()\n    -b <bits>   : Public modulus n must have at least <bits> bits. Default: 1024\n    -i <iters>  : Run <iters> Miller-Rabin iterations for primality testing. Default: 50\n    -n <pbfile> : Public key file is <pbfile>. Default: rsa.pub\n    -d <pvfile> : Private key file is <pvfile>. Default: rsa.priv\n    -v          : Enable verbose output.\n    -h          : Display program synopsis and usage.\n");
             break;
         default:
-            fprintf(stderr, "Usage: ./keygen-dist [options]\n  ./keygen-dist generates a public / private key pair, placing the keys into the public and private\n  key files as specified below. The keys have a modulus (n) whose length is specified in\n  the program options.\n    -s <seed>   : Use <seed> as the random number seed. Default: time()\n    -b <bits>   : Public modulus n must have at least <bits> bits. Default: 1024\n    -i <iters>  : Run <iters> Miller-Rabin iterations for primality testing. Default: 50\n    -n <pbfile> : Public key file is <pbfile>. Default: rsa.pub\n    -d <pvfile> : Private key file is <pvfile>. Default: rsa.priv\n    -v          : Enable verbose output.\n    -h          : Display program synopsis and usage.\n");
+            fprintf(stderr, "Usage: ./keygen [options]\n  ./keygen generates a public / private key pair, placing the keys into the public and private\n  key files as specified below. The keys have a modulus (n) whose length is specified in\n  the program options.\n    -s <seed>   : Use <seed> as the random number seed. Default: time()\n    -b <bits>   : Public modulus n must have at least <bits> bits. Default: 1024\n    -i <iters>  : Run <iters> Miller-Rabin iterations for primality testing. Default: 50\n    -n <pbfile> : Public key file is <pbfile>. Default: rsa.pub\n    -d <pvfile> : Private key file is <pvfile>. Default: rsa.priv\n    -v          : Enable verbose output.\n    -h          : Display program synopsis and usage.\n");
             break;
         }
     }
@@ -76,6 +77,8 @@ int main(int argc, char **argv) {
     //make public and private keys.
     mpz_t p, q, n, e, d, username, s;
     mpz_inits(p, q, n, e, d, username, s, NULL);
+    // make_prime(p, bit_count, iterations);
+    // gmp_printf("%Zx\n", p);
     rsa_make_pub(p, q, n, e, bit_count, iterations);
     rsa_make_priv(d, e, p, q);
     //get current username.
