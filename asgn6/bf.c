@@ -26,7 +26,7 @@ BloomFilter *bf_create(uint32_t size) {
         bf->n_keys = bf->n_hits = 0;
         bf->n_misses = bf->n_bits_examined = 0;
         for (int i = 0; i < N_HASHES; i ++) {
-            bf->salts[i] = default_salts[i]
+            bf->salts[i] = default_salts[i];
         }
         bf->filter = bv_create(size);
         if (bf->filter == NULL) {
@@ -38,7 +38,7 @@ BloomFilter *bf_create(uint32_t size) {
 }
 
 void bf_delete(BloomFilter **bf) {
-    free(bf);
+    free(*bf);
     bf = NULL;
 }
 
@@ -48,13 +48,13 @@ uint32_t bf_size(BloomFilter *bf) {
 
 void bf_insert(BloomFilter *bf, char *oldspeak) {
     for (int i = 0; i < N_HASHES; i += 1) {
-        bv_set_bit(bf->filter, hash(salts[i], oldspeak));
+        bv_set_bit(bf->filter, hash(bf->salts[i], oldspeak));
     }
 }
 
 bool bf_probe(BloomFilter *bf, char *oldspeak) {
     for (int i = 0; i < N_HASHES; i += 1) {
-        if (!bv_get_bit(bf->filter, hash(salts[i], oldspeak))) {return false;}
+        if (!bv_get_bit(bf->filter, hash(bf->salts[i], oldspeak))) {return false;}
     }
     return true;
 }
@@ -74,8 +74,8 @@ void bf_print(BloomFilter *bf) {
 }
 
 void bf_stats(BloomFilter *bf, uint32_t *nk, uint32_t *nh, uint32_t *nm, uint32_t *ne) {
-    nk = bf->n_keys;
-    nh = bf->n_hits;
-    nm = bf->n_misses;
-    ne = bf->n_bits_examined;
+    *nk = bf->n_keys;
+    *nh = bf->n_hits;
+    *nm = bf->n_misses;
+    *ne = bf->n_bits_examined;
 }

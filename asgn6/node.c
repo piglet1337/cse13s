@@ -1,5 +1,6 @@
 #include "node.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 Node *node_create(char *oldspeak, char *newspeak) {
     char *ospeak = (char*)malloc(sizeof(oldspeak));
@@ -11,15 +12,15 @@ Node *node_create(char *oldspeak, char *newspeak) {
         nspeak[i] = newspeak[i];
     }
     Node *n = (Node *) malloc(sizeof(Node));
-    *n->oldspeak = ospeak;
-    *n->newspeak = nspeak;
+    *n->oldspeak = *ospeak;
+    *n->newspeak = *nspeak;
     return n;
 }
 
 void node_delete(Node **n) {
-    free(n->oldspeak);
-    free(n->newspeak);
-    free(n);
+    free(n[0]->oldspeak);
+    free(n[0]->newspeak);
+    free(*n);
     n = NULL;
 }
 

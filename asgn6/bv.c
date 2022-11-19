@@ -1,6 +1,7 @@
 #include "bv.h"
 #include <stdio.h>
 #include <inttypes.h>
+#include <stdlib.h>
 
 struct BitVector {
     uint32_t length;
@@ -24,8 +25,7 @@ BitVector *bv_create(uint32_t length) {
 }
 
 void bv_delete(BitVector **bv) {
-    free(bv->vector);
-    free(bv);
+    free(*bv);
     bv = NULL;
 }
 

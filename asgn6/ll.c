@@ -1,4 +1,5 @@
 #include "ll.h"
+#include <stdlib.h>
 
 uint64_t seeks = 0;
 uint64_t links = 0;
@@ -12,7 +13,7 @@ struct LinkedList {
 
 LinkedList *ll_create(bool mtf) {
     LinkedList *ll = (LinkedList *) malloc(sizeof(LinkedList));
-    if (ll != NULL) {
+    if (ll) {
         ll->mtf = mtf;
         ll->length = 2;
         ll->head = node_create(NULL, NULL);
@@ -24,8 +25,8 @@ LinkedList *ll_create(bool mtf) {
 }
 
 void ll_delete(LinkedList **ll) {
-    Node *n = ll->head;
-    Node *n_next = ll->head->next;
+    Node *n = ll[0]->head;
+    Node *n_next = ll[0]->head->next;
     while (n_next) {
         free(n);
         n = n_next;
@@ -81,6 +82,6 @@ void ll_print(LinkedList *ll) {
 }
 
 void ll_stats(uint32_t *n_seeks, uint32_t *n_links) {
-    n_seeks = seeks;
-    n_links = links;
+    *n_seeks = seeks;
+    *n_links = links;
 }
