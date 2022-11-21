@@ -12,7 +12,7 @@ SOURCES  = $(wildcard *.c)
 OBJECTS  = $(SOURCES:%.c=%.o)
 
 # These are "phony" targets: they're not real files
-.PHONY: all clean
+.PHONY: all clean format spotless
 
 # This is the first actual target in the file.
 # That means it's built when 'make' is run without arguments.
@@ -29,6 +29,13 @@ $(EXECBIN): $(OBJECTS)
 # They can be recreated by running 'make all'.
 clean:
 	rm -f $(EXECBIN) $(OBJECTS)
+
+spotless:
+	rm -f $(EXECBIN) $(OBJECTS)
+
+# Formats code
+format:
+	clang-format -i -style=file *.[ch]
 
 # This is a default rule for creating a .o file from the corresponding .c file.
 %.o : %.c

@@ -4,10 +4,10 @@
 typedef struct Node Node;
 
 struct Node {
-    char *oldspeak;
-    char *newspeak;
-    Node *next;
-    Node *prev;
+  char *oldspeak;
+  char *newspeak;
+  Node *next;
+  Node *prev;
 };
 
 Node *node_create(char *oldspeak, char *newspeak);
