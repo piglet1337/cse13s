@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
       stats = true;
       break;
     case 'h':
-      printf("Usage: ./banhammer [options]\n  ./banhammer will read in words "
+      fprintf(stderr, "Usage: ./banhammer [options]\n  ./banhammer will read in words "
              "from stdin, identify any badspeak or old speak and output an\n  "
              "appropriate punishment message. The badspeak and oldspeak (with "
              "the newspeak translation)\n  that caused the punishment will be "
@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
              "rule.\n    -h          : Display program synopsis and usage.\n");
       return 0;
     default:
-      printf("Usage: ./banhammer [options]\n  ./banhammer will read in words "
+      fprintf(stderr, "Usage: ./banhammer [options]\n  ./banhammer will read in words "
              "from stdin, identify any badspeak or old speak and output an\n  "
              "appropriate punishment message. The badspeak and oldspeak (with "
              "the newspeak translation)\n  that caused the punishment will be "
