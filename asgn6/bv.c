@@ -26,21 +26,21 @@ BitVector *bv_create(uint32_t length) {
 
 void bv_delete(BitVector **bv) {
   free(*bv);
-  bv = NULL;
+  *bv = NULL;
 }
 
 uint32_t bv_length(BitVector *bv) { return bv->length; }
 
 void bv_set_bit(BitVector *bv, uint32_t i) {
-  bv->vector[i / 64] |= (1U << (i % 64));
+  bv->vector[i / 64] |= (1UL << (i % 64));
 }
 
 void bv_clr_bit(BitVector *bv, uint32_t i) {
-  bv->vector[i / 64] &= ~(1U << (i % 64));
+  bv->vector[i / 64] &= ~(1UL << (i % 64));
 }
 
 uint8_t bv_get_bit(BitVector *bv, uint32_t i) {
-  return (bv->vector[i / 64] & (1U << (i % 64))) >> (i % 64);
+  return (bv->vector[i / 64] & (1UL << (i % 64))) >> (i % 64);
 }
 
 void bv_print(BitVector *bv) {

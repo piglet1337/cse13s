@@ -36,6 +36,7 @@ void node_delete(Node **n) {
 }
 
 void node_print(Node *n) {
+  if (n == NULL) {return;}
   if (n->oldspeak && n->newspeak) {
     printf("%s -> %s\n", n->oldspeak, n->newspeak);
   } else if (n->oldspeak) {

@@ -19,7 +19,6 @@ Parser *parser_create(FILE *f) {
 }
 
 void parser_delete(Parser **p) {
-  free((*p)->current_line);
   free(*p);
   p = NULL;
 }

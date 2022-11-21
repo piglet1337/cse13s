@@ -1,6 +1,7 @@
 #include "bf.h"
 #include "city.h"
 
+
 #define N_HASHES 5
 
 struct BloomFilter {
