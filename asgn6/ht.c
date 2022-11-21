@@ -50,7 +50,8 @@ Node *ht_lookup(HashTable *ht, char *oldspeak) {
   Node *ht_node = NULL;
   if (ht->lists[hash_result]) {
     ht_node = ll_lookup(ht->lists[hash_result], oldspeak);
-  }
+    ht->n_hits += 1;
+  } else {ht->n_misses += 1;}
   uint32_t new_links;
   ll_stats(&n_seeks, &new_links);
   ht->n_examined += new_links - n_links;
@@ -62,7 +63,11 @@ void ht_insert(HashTable *ht, char *oldspeak, char *newspeak) {
   if (!ht->lists[hash_result]) {
     ht->lists[hash_result] = ll_create(ht->mtf);
   }
+  uint32_t temp = ll_length(ht->lists[hash_result]);
   ll_insert(ht->lists[hash_result], oldspeak, newspeak);
+  if (temp - ll_length(ht->lists[hash_result]) != 0) {
+    ht->n_keys += 1;
+  }
 }
 
 uint32_t ht_count(HashTable *ht) {
@@ -83,6 +88,8 @@ void ht_print(HashTable *ht) {
   }
 }
 
+#include <stdio.h>
+#include <inttypes.h>
 void ht_stats(HashTable *ht, uint32_t *nk, uint32_t *nh, uint32_t *nm,
               uint32_t *ne) {
   *nk = ht->n_keys;

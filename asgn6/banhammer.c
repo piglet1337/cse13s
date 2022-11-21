@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <inttypes.h>
 
 // Define OPTIONS constant
 #define OPTIONS "ht:f:ms"
@@ -22,7 +23,7 @@ int main(int argc, char **argv) {
   // define variables
   bool mtf = false;
   uint32_t ht_size = 10000;
-  uint32_t bf_size = 0x80000;
+  uint32_t bf_length = 0x80000;
   bool stats = false;
   int opt = 0;
   // takes comand line arguments and runs associated code.
@@ -32,7 +33,7 @@ int main(int argc, char **argv) {
       ht_size = atoll(optarg);
       break;
     case 'f':
-      bf_size = atoll(optarg);
+      bf_length = atoll(optarg);
       break;
     case 'm':
       mtf = true;
@@ -69,7 +70,7 @@ int main(int argc, char **argv) {
     }
   }
   // initialize Bloom filter and hash table
-  BloomFilter *bf = bf_create(bf_size);
+  BloomFilter *bf = bf_create(bf_length);
   HashTable *ht = ht_create(ht_size, mtf);
   // open badspeak.txt and newspeak.txt
   FILE *badspeak;
@@ -145,6 +146,36 @@ int main(int argc, char **argv) {
     }
   }
   if (stats) {
+    uint32_t ht_nk;
+    uint32_t ht_nh;
+    uint32_t ht_nm;
+    uint32_t ht_ne;
+    ht_stats(ht, &ht_nk, &ht_nh, &ht_nm, &ht_ne);
+    uint32_t bf_nk;
+    uint32_t bf_nh;
+    uint32_t bf_nm;
+    uint32_t bf_ne;
+    bf_stats(bf, &bf_nk, &bf_nh, &bf_nm, &bf_ne);
+    printf("ht keys: %" PRIu32 "\nht hits: %" PRIu32 "\nht misses: %" PRIu32 "\nht probes: %" PRIu32 "\n", ht_nk, ht_nh, ht_nm, ht_ne);
+    printf("bf keys: %" PRIu32 "\nbf hits: %" PRIu32 "\nbf misses: %" PRIu32 "\nbf bits examined: %" PRIu32 "\n", bf_nk, bf_nh, bf_nm, bf_ne);
+    double bits_per_miss = 0;
+    bf_nm = 2;
+    if (bf_nm) {
+      bits_per_miss = (double)(bf_ne - 5*bf_nh)/bf_nm;
+    }
+    double false_positives = 0;
+    if (bf_nh) {
+      false_positives = (double) ht_nm/bf_nh;
+    }
+    double bloom_filter_load = 0;
+    if (bf_size(bf)) {
+      bloom_filter_load = (double) bf_count(bf)/bf_size(bf);
+    }
+    double average_seek_length = 0;
+    if (ht_nh + ht_nm) {
+      average_seek_length = (double) ht_ne/(ht_nh + ht_nm);
+    }
+    printf("Bits examined per miss: %f\nFalse positives: %f\nAverage seek length: %f\nBloom filter load: %f\n", bits_per_miss, false_positives, average_seek_length, bloom_filter_load);
     return 0;
   }
   if (ll_length(badspeak_list) != 0 && ll_length(oldspeak_list) != 0) {

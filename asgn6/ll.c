@@ -53,6 +53,7 @@ Node *ll_lookup(LinkedList *ll, char *oldspeak) {
   Node *n = ll->head;
   Node *n_next = ll->head->next;
   while (n_next != ll->tail) {
+    links += 1;
     if (str_cmp(n_next->oldspeak, oldspeak)) {
       if (ll->mtf) {
         n_next->prev->next = n_next->next;

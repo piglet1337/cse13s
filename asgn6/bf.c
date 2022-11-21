@@ -39,9 +39,12 @@ void bf_delete(BloomFilter **bf) {
   bf = NULL;
 }
 
-uint32_t bf_size(BloomFilter *bf) { return bv_length(bf->filter); }
+uint32_t bf_size(BloomFilter *bf) {
+  return bv_length(bf->filter);
+}
 
 void bf_insert(BloomFilter *bf, char *oldspeak) {
+  bf->n_keys += 1;
   for (int i = 0; i < N_HASHES; i += 1) {
     bv_set_bit(bf->filter, hash(bf->salts[i], oldspeak) % bf_size(bf));
   }
@@ -49,10 +52,13 @@ void bf_insert(BloomFilter *bf, char *oldspeak) {
 
 bool bf_probe(BloomFilter *bf, char *oldspeak) {
   for (int i = 0; i < N_HASHES; i += 1) {
+    bf->n_bits_examined += 1;
     if (!bv_get_bit(bf->filter, hash(bf->salts[i], oldspeak) % bf_size(bf))) {
+      bf->n_misses += 1;
       return false;
     }
   }
+  bf->n_hits += 1;
   return true;
 }
 
