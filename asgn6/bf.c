@@ -48,13 +48,13 @@ uint32_t bf_size(BloomFilter *bf) {
 
 void bf_insert(BloomFilter *bf, char *oldspeak) {
     for (int i = 0; i < N_HASHES; i += 1) {
-        bv_set_bit(bf->filter, hash(bf->salts[i], oldspeak));
+        bv_set_bit(bf->filter, hash(bf->salts[i], oldspeak) % bf_size(bf));
     }
 }
 
 bool bf_probe(BloomFilter *bf, char *oldspeak) {
     for (int i = 0; i < N_HASHES; i += 1) {
-        if (!bv_get_bit(bf->filter, hash(bf->salts[i], oldspeak))) {return false;}
+        if (!bv_get_bit(bf->filter, hash(bf->salts[i], oldspeak) % bf_size(bf))) {return false;}
     }
     return true;
 }

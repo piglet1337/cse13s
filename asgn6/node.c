@@ -3,17 +3,23 @@
 #include <stdlib.h>
 
 Node *node_create(char *oldspeak, char *newspeak) {
-    char *ospeak = (char*)malloc(sizeof(oldspeak));
-    char *nspeak = (char*)malloc(sizeof(newspeak));
-    for (int i = 0; oldspeak[i] != '\0'; i += 1) {
-        ospeak[i] = oldspeak[i];
-    }
-    for (int i = 0; newspeak[i] != '\0'; i += 1) {
-        nspeak[i] = newspeak[i];
-    }
     Node *n = (Node *) malloc(sizeof(Node));
-    *n->oldspeak = *ospeak;
-    *n->newspeak = *nspeak;
+    if (oldspeak != NULL) {
+        char *ospeak = (char*)malloc(sizeof(oldspeak));
+        for (int i = 0; oldspeak[i] != '\0'; i += 1) {
+            ospeak[i] = oldspeak[i];
+        }
+        *n->oldspeak = *ospeak;
+    }
+    else {n->oldspeak = NULL;}
+    if (newspeak != NULL) {
+        char *nspeak = (char*)malloc(sizeof(newspeak));
+        for (int i = 0; newspeak[i] != '\0'; i += 1) {
+            nspeak[i] = newspeak[i];
+        }
+        *n->newspeak = *nspeak;
+    }
+    else {n->newspeak = NULL;}
     return n;
 }
 

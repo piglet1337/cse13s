@@ -45,7 +45,7 @@ Node *ht_lookup(HashTable *ht, char *oldspeak) {
     uint32_t n_links;
     uint32_t n_seeks;
     ll_stats(&n_seeks, &n_links);
-    Node *ht_node = ll_lookup(ht->lists[hash(ht->salt, oldspeak)], oldspeak);
+    Node *ht_node = ll_lookup(ht->lists[hash(ht->salt, oldspeak) % ht_size(ht)], oldspeak);
     if (!ht_node) {
         ht_node = NULL;
     }
@@ -57,8 +57,8 @@ Node *ht_lookup(HashTable *ht, char *oldspeak) {
 
 void ht_insert(HashTable *ht, char *oldspeak, char *newspeak) {
     LinkedList *ht_ll;
-    if (ht->lists[hash(ht->salt, oldspeak)]) {
-        ht_ll = ht->lists[hash(ht->salt, oldspeak)];
+    if (ht->lists[hash(ht->salt, oldspeak) % ht_size(ht)]) {
+        ht_ll = ht->lists[hash(ht->salt, oldspeak) % ht_size(ht)];
     }
     else {
         ht_ll = ll_create(ht->mtf);
