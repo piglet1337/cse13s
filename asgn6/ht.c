@@ -30,8 +30,8 @@ HashTable *ht_create(uint32_t size, bool mtf) {
 }
 
 void ht_delete(HashTable **ht) {
-    for (uint32_t i =0; i < ht_size(ht[0]); i += 1) {
-        ll_delete(&ht[0]->lists[i]);
+    for (uint32_t i =0; i < ht_size(*ht); i += 1) {
+        ll_delete(&(*ht)->lists[i]);
     }
     free(*ht);
     ht = NULL;
@@ -56,8 +56,11 @@ Node *ht_lookup(HashTable *ht, char *oldspeak) {
 }
 
 void ht_insert(HashTable *ht, char *oldspeak, char *newspeak) {
-    LinkedList *ht_ll = ht->lists[hash(ht->salt, oldspeak)];
-    if (!ht_ll) {
+    LinkedList *ht_ll;
+    if (ht->lists[hash(ht->salt, oldspeak)]) {
+        ht_ll = ht->lists[hash(ht->salt, oldspeak)];
+    }
+    else {
         ht_ll = ll_create(ht->mtf);
     }
     ll_insert(ht_ll, oldspeak, newspeak);

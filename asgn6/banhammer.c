@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     //define variables
     bool mtf = false;
     uint32_t ht_size = 10000;
-    uint32_t bf_size = 0x80000;
+    // uint32_t bf_size = 0x80000;
     bool stats = false;
     int opt = 0;
     //takes comand line arguments and runs associated code.
@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
             ht_size = atoll(optarg);
             break;
         case 'f':
-            bf_size = atoll(optarg);
+            // bf_size = atoll(optarg);
             break;
         case 'm':
             mtf = true;
@@ -42,15 +42,15 @@ int main(int argc, char **argv) {
             stats = true;
             break;
         case 'h':
-            printf("Usage: ./banhammer [options]\n  ./banhammer will read in words from stdin, identify any badspeak or old speak and output an appropriate punishment message. The badspeak and oldspeak (with the newspeak translation) that caused the punishment will be printed after the message. If statistics are enabled punishment messages are suppressed and only statistics will be printed.\n    -t <ht_size> : Hash table size set to <ht_size>. (default: 10000)\n    -f <bf_size> : Bloom filter size set to <bf_size>. (default 2^19)\n    -s           : Enables the printing of statistics.\n    -m           : Enables move-to-frount rule.\n    -h           : Display program synopsis and usage.\n");
-            return 3;
+            printf("Usage: ./banhammer [options]\n  ./banhammer will read in words from stdin, identify any badspeak or old speak and output an\n  appropriate punishment message. The badspeak and oldspeak (with the newspeak translation)\n  that caused the punishment will be printed after the message. If statistics are enabled\n  punishment messages are suppressed and only statistics will be printed.\n    -t <ht_size>: Hash table size set to <ht_size>. (default: 10000)\n    -f <bf_size>: Bloom filter size set to <bf_size>. (default 2^19)\n    -s          : Enables the printing of statistics.\n    -m          : Enables move-to-frount rule.\n    -h          : Display program synopsis and usage.\n");
+            return 0;
         default:
-            printf("Usage: ./banhammer [options]\n  ./banhammer will read in words from stdin, identify any badspeak or old speak and output an appropriate punishment message. The badspeak and oldspeak (with the newspeak translation) that caused the punishment will be printed after the message. If statistics are enabled punishment messages are suppressed and only statistics will be printed.\n    -t <ht_size> : Hash table size set to <ht_size>. (default: 10000)\n    -f <bf_size> : Bloom filter size set to <bf_size>. (default 2^19)\n    -s           : Enables the printing of statistics.\n    -m           : Enables move-to-frount rule.\n    -h           : Display program synopsis and usage.\n");
-            return 3;
+            printf("Usage: ./banhammer [options]\n  ./banhammer will read in words from stdin, identify any badspeak or old speak and output an\n  appropriate punishment message. The badspeak and oldspeak (with the newspeak translation)\n  that caused the punishment will be printed after the message. If statistics are enabled\n  punishment messages are suppressed and only statistics will be printed.\n    -t <ht_size>: Hash table size set to <ht_size>. (default: 10000)\n    -f <bf_size>: Bloom filter size set to <bf_size>. (default 2^19)\n    -s          : Enables the printing of statistics.\n    -m          : Enables move-to-frount rule.\n    -h          : Display program synopsis and usage.\n");
+            return 0;
         }
     }
     //initialize Bloom filter and hash table
-    BloomFilter *bf = bf_create(bf_size);
+    // BloomFilter *bf = bf_create(bf_size);
     HashTable *ht = ht_create(ht_size, mtf);
     //open badspeak.txt and newspeak.txt
     FILE *badspeak;
@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
     while (1) {
         char str[30];
         if (fgets(str, 30, badspeak) == NULL) {break;}
-        bf_insert(bf, str);
+        // bf_insert(bf, str);
         ht_insert(ht, str, NULL);
     }
     //fill Bloom filter and hash table with newspeak
@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
             newspeak_str[j] = oldspeak_str[i];
         }
         newspeak_str[i] = '\0';
-        bf_insert(bf, oldspeak_str);
+        // bf_insert(bf, oldspeak_str);
         ht_insert(ht, oldspeak_str, newspeak_str);
     }
     //create parser
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
         char word[30];
         next_word(p, word);
         //check if word is in the Bloom filter
-        if (bf_probe(bf, word)) {
+        // if (bf_probe(bf, word)) {
             //check if word is in hashtable
             Node *hash_result = ht_lookup(ht, word);
             if (hash_result == NULL) {continue;}
@@ -107,7 +107,7 @@ int main(int argc, char **argv) {
                 ll_insert(badspeak_list, hash_result->oldspeak, NULL);
                 continue;
             }
-        }
+        // }
     }
     if (stats) {
         return 0;

@@ -25,8 +25,8 @@ LinkedList *ll_create(bool mtf) {
 }
 
 void ll_delete(LinkedList **ll) {
-    Node *n = ll[0]->head;
-    Node *n_next = ll[0]->head->next;
+    Node *n = (*ll)->head;
+    Node *n_next = (*ll)->head->next;
     while (n_next) {
         free(n);
         n = n_next;

@@ -18,8 +18,8 @@ Node *node_create(char *oldspeak, char *newspeak) {
 }
 
 void node_delete(Node **n) {
-    free(n[0]->oldspeak);
-    free(n[0]->newspeak);
+    free((*n)->oldspeak);
+    free((*n)->newspeak);
     free(*n);
     n = NULL;
 }
