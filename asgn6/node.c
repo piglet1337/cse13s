@@ -5,19 +5,27 @@
 Node *node_create(char *oldspeak, char *newspeak) {
     Node *n = (Node *) malloc(sizeof(Node));
     if (oldspeak != NULL) {
-        char *ospeak = (char*)malloc(sizeof(oldspeak));
+        int length = 0;
+        for (int i = 0; oldspeak[i] != '\0'; i += 1) {
+            length += 1;
+        }
+        char ospeak[length + 1];
         for (int i = 0; oldspeak[i] != '\0'; i += 1) {
             ospeak[i] = oldspeak[i];
         }
-        *n->oldspeak = *ospeak;
+        n->oldspeak = ospeak;
     }
     else {n->oldspeak = NULL;}
     if (newspeak != NULL) {
-        char *nspeak = (char*)malloc(sizeof(newspeak));
+        int length = 0;
+        for (int i = 0; oldspeak[i] != '\0'; i += 1) {
+            length += 1;
+        }
+        char nspeak[length + 1];
         for (int i = 0; newspeak[i] != '\0'; i += 1) {
             nspeak[i] = newspeak[i];
         }
-        *n->newspeak = *nspeak;
+        n->newspeak = nspeak;
     }
     else {n->newspeak = NULL;}
     return n;

@@ -3,7 +3,7 @@ EXECBIN  = banhammer
 
 # Default values for compiling C files
 CC       = clang
-CFLAGS   = -Wall -Wpedantic -Werror -Wextra
+CFLAGS   = -Wall -Wpedantic -Werror -Wextra -gdwarf-4
 LIBFLAGS = -lm
 
 # All available .c files are included as SOURCES

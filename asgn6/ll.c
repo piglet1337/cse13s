@@ -15,11 +15,13 @@ LinkedList *ll_create(bool mtf) {
     LinkedList *ll = (LinkedList *) malloc(sizeof(LinkedList));
     if (ll) {
         ll->mtf = mtf;
-        ll->length = 2;
+        ll->length = 0;
         ll->head = node_create(NULL, NULL);
         ll->tail = node_create(NULL, NULL);
         ll->head->next = ll->tail;
+        ll->head->prev = NULL;
         ll->tail->prev = ll->head;
+        ll->tail->next = NULL;
     }
     return ll;
 }
