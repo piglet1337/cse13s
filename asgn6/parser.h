@@ -1,9 +1,9 @@
 #ifndef __PARSER_H__
 #define __PARSER_H__
 
+#include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #define MAX_PARSER_LINE_LENGTH 1000
 

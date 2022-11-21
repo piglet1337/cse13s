@@ -24,7 +24,6 @@ uint32_t bf_count(BloomFilter *bf);
 
 void bf_print(BloomFilter *bf);
 
-void bf_stats(BloomFilter *bf, uint32_t *nk, uint32_t *nh, uint32_t *nm,
-              uint32_t *ne);
+void bf_stats(BloomFilter *bf, uint32_t *nk, uint32_t *nh, uint32_t *nm, uint32_t *ne);
 
 #endif

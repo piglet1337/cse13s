@@ -22,7 +22,6 @@ uint32_t ht_count(HashTable *ht);
 
 void ht_print(HashTable *ht);
 
-void ht_stats(HashTable *ht, uint32_t *nk, uint32_t *nh, uint32_t *nm,
-              uint32_t *ne);
+void ht_stats(HashTable *ht, uint32_t *nk, uint32_t *nh, uint32_t *nm, uint32_t *ne);
 
 #endif

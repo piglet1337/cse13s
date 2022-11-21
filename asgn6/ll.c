@@ -11,6 +11,7 @@ struct LinkedList {
   bool mtf;
 };
 
+
 LinkedList *ll_create(bool mtf) {
   LinkedList *ll = (LinkedList *)malloc(sizeof(LinkedList));
   if (ll) {
@@ -27,21 +28,21 @@ LinkedList *ll_create(bool mtf) {
 }
 
 void ll_delete(LinkedList **ll) {
-  Node *n = (*ll)->head;
-  Node *n_next = (*ll)->head->next;
-  while (n_next) {
-    free(n);
+  Node **n = &(*ll)->head;
+  Node **n_next = &(*ll)->head->next;
+  do {
+    node_delete(n);
     n = n_next;
-    n_next = n->next;
-  }
+    n_next = &(*n)->next;
+  } while (*n_next != (*ll)->tail);
   free(*ll);
-  ll = NULL;
+  *ll = NULL;
 }
 
 uint32_t ll_length(LinkedList *ll) { return ll->length; }
 
 int str_cmp(char *str1, char *str2) {
-  for (int i = 0; str1[i] != '\0' && str2[i] != '\0'; i += 1) {
+  for (int i = 0; str1[i] != '\0' || str2[i] != '\0'; i += 1) {
     if (str1[i] != str2[i]) {return 0;}
   }
   return 1;
@@ -52,16 +53,17 @@ Node *ll_lookup(LinkedList *ll, char *oldspeak) {
   Node *n = ll->head;
   Node *n_next = ll->head->next;
   while (n_next != ll->tail) {
-    links += 1;
-    if (str_cmp(n->oldspeak, oldspeak)) {
+    if (str_cmp(n_next->oldspeak, oldspeak)) {
       if (ll->mtf) {
-        n->prev->next = n->next;
-        n->next->prev = n->prev;
-        n->next = ll->head->next;
-        ll->head->next = n;
-        n->prev = ll->head;
+        n_next->prev->next = n_next->next;
+        n_next->next->prev = n_next->prev;
+        ll->head->next->prev = n_next;
+        
+        n_next->next = ll->head->next;
+        n_next->prev = ll->head;
+        ll->head->next = n_next;
       }
-      return n;
+      return n_next;
     }
     n = n_next;
     n_next = n->next;
@@ -74,6 +76,7 @@ void ll_insert(LinkedList *ll, char *oldspeak, char *newspeak) {
     return;
   }
   Node *n = node_create(oldspeak, newspeak);
+  ll->head->next->prev = n;
   n->next = ll->head->next;
   n->prev = ll->head;
   ll->head->next = n;
@@ -84,7 +87,7 @@ void ll_print(LinkedList *ll) {
   Node *n = ll->head;
   Node *n_next = ll->head->next;
   while (n_next != ll->tail) {
-    node_print(n);
+    node_print(n_next);
     n = n_next;
     n_next = n->next;
   }
