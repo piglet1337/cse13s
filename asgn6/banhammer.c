@@ -82,14 +82,19 @@ int main(int argc, char **argv) {
     if (fgets(str, 30, badspeak) == NULL) {
       break;
     }
+    int i;
+    for (i = 0; str[i] != '\n'; i += 1) {
+      continue;
+    }
+    str[i] = '\0';
     bf_insert(bf, str);
     ht_insert(ht, str, NULL);
   }
   // fill Bloom filter and hash table with newspeak
   while (1) {
-    char str[60];
-    char oldspeak_str[30];
-    char newspeak_str[30];
+    char str[60] = "";
+    char oldspeak_str[30] = "";
+    char newspeak_str[30] = "";
     if (fgets(str, 60, newspeak) == NULL) {
       break;
     }
@@ -99,8 +104,9 @@ int main(int argc, char **argv) {
     }
     oldspeak_str[i] = '\0';
     i += 1;
-    for (int j = 0; str[i] != '\0'; j += 1) {
-      newspeak_str[j] = oldspeak_str[i];
+    for (int j = 0; str[i] != '\n'; j += 1) {
+      newspeak_str[j] = str[i];
+      i += 1;
     }
     newspeak_str[i] = '\0';
     bf_insert(bf, oldspeak_str);
