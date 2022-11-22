@@ -1,14 +1,17 @@
+//include necessary libraries
 #include "parser.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
 
+//define structure for Parser
 struct Parser {
   FILE *f;
   char current_line[MAX_PARSER_LINE_LENGTH + 1];
   uint32_t line_offset;
 };
 
+//creates a parser and returns it
 Parser *parser_create(FILE *f) {
   Parser *p = (Parser *)malloc(sizeof(Parser));
   if (p != NULL) {
@@ -18,11 +21,14 @@ Parser *parser_create(FILE *f) {
   return p;
 }
 
+//deletes parser and frees used memory
 void parser_delete(Parser **p) {
   free(*p);
   p = NULL;
 }
 
+//sets word equal to the next word in the parser and returns true
+//returns false when it reaches the end of the file
 bool next_word(Parser *p, char *word) {
   if (p->line_offset == 0) {
     if (!fgets(p->current_line, MAX_PARSER_LINE_LENGTH + 1, p->f)) {

@@ -91,6 +91,7 @@ int main(int argc, char **argv) {
     bf_insert(bf, str);
     ht_insert(ht, str, NULL);
   }
+  fclose(badspeak);
   // fill Bloom filter and hash table with newspeak
   while (1) {
     char str[60] = "";
@@ -113,6 +114,7 @@ int main(int argc, char **argv) {
     bf_insert(bf, oldspeak_str);
     ht_insert(ht, oldspeak_str, newspeak_str);
   }
+  fclose(newspeak);
   // create parser
   Parser *p = parser_create(stdin);
   // create linked lists for badspeak and oldspeak
@@ -175,6 +177,16 @@ int main(int argc, char **argv) {
       average_seek_length = (double) ht_ne/(ht_nh + ht_nm);
     }
     printf("Bits examined per miss: %f\nFalse positives: %f\nAverage seek length: %f\nBloom filter load: %f\n", bits_per_miss, false_positives, average_seek_length, bloom_filter_load);
+    LinkedList **badspeak_p = &badspeak_list;
+    LinkedList **oldspeak_p = &oldspeak_list;
+    Parser **p_p = &p;
+    BloomFilter **bf_p = &bf;
+    HashTable **ht_p = &ht;
+    ll_delete(badspeak_p);
+    ll_delete(oldspeak_p);
+    parser_delete(p_p);
+    bf_delete(bf_p);
+    ht_delete(ht_p);
     return 0;
   }
   if (ll_length(badspeak_list) != 0 && ll_length(oldspeak_list) != 0) {
@@ -188,5 +200,15 @@ int main(int argc, char **argv) {
     printf("%s", goodspeak_message);
     ll_print(oldspeak_list);
   }
+  LinkedList **badspeak_p = &badspeak_list;
+  LinkedList **oldspeak_p = &oldspeak_list;
+  Parser **p_p = &p;
+  BloomFilter **bf_p = &bf;
+  HashTable **ht_p = &ht;
+  ll_delete(badspeak_p);
+  ll_delete(oldspeak_p);
+  parser_delete(p_p);
+  bf_delete(bf_p);
+  ht_delete(ht_p);
   return 0;
 }

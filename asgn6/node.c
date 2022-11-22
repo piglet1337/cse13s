@@ -1,8 +1,9 @@
+//include necessary libraries
 #include "node.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-
+//creates node and returns it
 Node *node_create(char *oldspeak, char *newspeak) {
   Node *n = (Node *)malloc(sizeof(Node));
   if (oldspeak != NULL) {
@@ -28,6 +29,7 @@ Node *node_create(char *oldspeak, char *newspeak) {
   return n;
 }
 
+//deletes not freeing any memory used
 void node_delete(Node **n) {
   free((*n)->newspeak);
   free((*n)->oldspeak);
@@ -35,6 +37,7 @@ void node_delete(Node **n) {
   *n = NULL;
 }
 
+//prints node
 void node_print(Node *n) {
   if (n == NULL) {return;}
   if (n->oldspeak && n->newspeak) {
