@@ -29,7 +29,7 @@ bool next_word(Parser *p, char *word) {
       return false;
     }
   }
-  while (p->current_line[p->line_offset] == ' ') {
+  while ((!isalnum(p->current_line[p->line_offset])) && p->current_line[p->line_offset] != '-' && p->current_line[p->line_offset] != '\'' && p->current_line[p->line_offset] != '\0' && p->current_line[p->line_offset] != '\n') {
     p->line_offset += 1;
   }
   if (p->current_line[p->line_offset] == '\0' || p->current_line[p->line_offset] == '\n') {

@@ -159,9 +159,8 @@ int main(int argc, char **argv) {
     printf("ht keys: %" PRIu32 "\nht hits: %" PRIu32 "\nht misses: %" PRIu32 "\nht probes: %" PRIu32 "\n", ht_nk, ht_nh, ht_nm, ht_ne);
     printf("bf keys: %" PRIu32 "\nbf hits: %" PRIu32 "\nbf misses: %" PRIu32 "\nbf bits examined: %" PRIu32 "\n", bf_nk, bf_nh, bf_nm, bf_ne);
     double bits_per_miss = 0;
-    bf_nm = 2;
     if (bf_nm) {
-      bits_per_miss = (double)(bf_ne - 5*bf_nh)/bf_nm;
+      bits_per_miss = (double) (bf_ne - (N_HASHES*bf_nh))/bf_nm;
     }
     double false_positives = 0;
     if (bf_nh) {
