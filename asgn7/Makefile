@@ -1,5 +1,5 @@
 CC       = clang
-CFLAGS   = -Wall -Wpedantic -Werror -Wextra -gdwarf-4
+CFLAGS   = -Wall -Wpedantic -Werror -Wextra
 LIBFLAGS = -lm
 
 SOURCES  = $(wildcard *.c)
