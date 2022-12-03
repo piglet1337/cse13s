@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "node.h"
 #include "pq.h"
+#include "code.h"
+#include <inttypes.h>
 
 int main () {
     //node tests
@@ -33,5 +35,22 @@ int main () {
     node_delete(&left);
     node_delete(&right);
 
+    //code tests
+    Code c = code_init();
+    code_push_bit(&c, 0);
+    code_push_bit(&c, 0);
+    code_push_bit(&c, 1);
+    uint8_t bit;
+    code_pop_bit(&c, &bit);
+    if (!bit) {printf("code fail\n");}
+    code_pop_bit(&c, &bit);
+    if (bit) {printf("code fail\n");}
+    code_pop_bit(&c, &bit);
+    if (bit) {printf("code fail\n");}
+    if (code_pop_bit(&c, &bit)) {printf("code fail\n");}
+    for (int i = 0; i < ALPHABET; i += 1) {
+        if (!code_push_bit(&c, 1)) {printf("code fail\n");}
+    }
+    if (code_push_bit(&c, 1)) {printf("code fail\n");}
     return 0;
 }
