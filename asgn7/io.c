@@ -50,6 +50,7 @@ bool read_bit(int infile, uint8_t *bit) {
     return true;
 }
 
+//adds c to the buffer and writes to outfile when the buffer fills up
 void write_code(int outfile, Code *c) {
     if (code_index == 0) {
         for (int i = 0; i < BLOCK; i += 1) {
@@ -71,6 +72,7 @@ void write_code(int outfile, Code *c) {
     }
 }
 
+//writes buffer to outfile
 void flush_codes(int outfile) {
     write_bytes(outfile, code_buffer, (code_index/8));
 }

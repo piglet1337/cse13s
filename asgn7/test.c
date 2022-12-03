@@ -7,6 +7,7 @@
 #include "pq.h"
 #include "code.h"
 #include "io.h"
+#include "stack.h"
 
 int main () {
     //node tests
@@ -28,7 +29,6 @@ int main () {
     if (pq_size(pq) != 3) {printf("pq_size fail");}
     Node *fail = node_create(16, 72);
     if (enqueue(pq, fail)) {printf("enqueue fail");}
-    node_delete(&fail);
     Node *l;
     dequeue(pq, &l);
     if (l != left) {printf("dequeue fail");}
@@ -43,10 +43,32 @@ int main () {
     if (pq_size(pq) != 0) {printf("pq_size fail");}
     pq_print(pq);
     pq_delete(&pq);
+
+    //stack tests
+    Stack *s = stack_create(2);
+    if (stack_size(s) != 0) {printf("stack_size fail");}
+    stack_push(s, n);
+    if (stack_size(s) != 1) {printf("stack_size fail");}
+    stack_push(s, left);
+    if (stack_size(s) != 2) {printf("stack_size fail");}
+    if (stack_push(s, fail)) {printf("stack_push fail");}
+    stack_pop(s, &l);
+    if (l != left) {printf("stack_pop fail");}
+    if (stack_size(s) != 1) {printf("stack_size fail");}
+    stack_push(s, right);
+    if (stack_size(s) != 2) {printf("stack_size fail");}
+    stack_pop(s, &l);
+    if (l != right) {printf("stack_pop fail");}
+    if (stack_size(s) != 1) {printf("stack_size fail");}
+    stack_pop(s, &l);
+    if (l != n) {printf("stack_pop fail");}
+    if (stack_size(s) != 0) {printf("stack_size fail");}
+    if (stack_pop(s, &l)) {printf("stack_pop fail");}
+    stack_delete(&s);
     node_delete(&n);
     node_delete(&left);
     node_delete(&right);
-
+    node_delete(&fail);
     //code tests
     Code c = code_init();
     if (code_size(&c) != 0) {printf("code_size fail\n");}
@@ -104,6 +126,6 @@ int main () {
     }
     close(test_file);
     remove("test.txt");
-    
+
     return 0;
 }
