@@ -74,5 +74,5 @@ void write_code(int outfile, Code *c) {
 
 //writes buffer to outfile
 void flush_codes(int outfile) {
-    write_bytes(outfile, code_buffer, (code_index/8));
+    write_bytes(outfile, code_buffer, (code_index/8) + 1);
 }
