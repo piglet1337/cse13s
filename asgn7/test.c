@@ -69,6 +69,7 @@ int main () {
     node_delete(&left);
     node_delete(&right);
     node_delete(&fail);
+    
     //code tests
     Code c = code_init();
     if (code_size(&c) != 0) {printf("code_size fail\n");}
