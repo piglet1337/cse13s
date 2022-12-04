@@ -39,10 +39,10 @@ int main(int argc, char **argv) {
             statistics = true;
             break;
         case 'h':
-            printf("SYNOPSIS\n  A Huffman decoder.\n  Decompresses a file using the Huffman coding algorithm.\n\nUSAGE\n  ./decode [-h] [-i infile] [-o outfile]\n\nOPTIONS\n  -h             Program usage and help.\n  -v             Print compression statistics.\n  -i infile      Input file to decompress.\n  -o outfile     Output of decompressed data.\n");
+            fprintf(stderr, "SYNOPSIS\n  A Huffman decoder.\n  Decompresses a file using the Huffman coding algorithm.\n\nUSAGE\n  ./decode [-h] [-i infile] [-o outfile]\n\nOPTIONS\n  -h             Program usage and help.\n  -v             Print compression statistics.\n  -i infile      Input file to decompress.\n  -o outfile     Output of decompressed data.\n");
             return 0;
         default:
-            printf("SYNOPSIS\n  A Huffman decoder.\n  Decompresses a file using the Huffman coding algorithm.\n\nUSAGE\n  ./decode [-h] [-i infile] [-o outfile]\n\nOPTIONS\n  -h             Program usage and help.\n  -v             Print compression statistics.\n  -i infile      Input file to decompress.\n  -o outfile     Output of decompressed data.\n");
+            fprintf(stderr, "SYNOPSIS\n  A Huffman decoder.\n  Decompresses a file using the Huffman coding algorithm.\n\nUSAGE\n  ./decode [-h] [-i infile] [-o outfile]\n\nOPTIONS\n  -h             Program usage and help.\n  -v             Print compression statistics.\n  -i infile      Input file to decompress.\n  -o outfile     Output of decompressed data.\n");
             return 0;
         }
     }
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
     Node *root = rebuild_tree(header.tree_size, tree);
     //open outfile
     int output_file;
-    if (infile == NULL) {
+    if (outfile == NULL) {
         output_file = 1;
     }
     else {
@@ -77,7 +77,6 @@ int main(int argc, char **argv) {
     }
     Node *current_node = root;
     uint64_t total = 0;
-    // uint8_t buffer[BLOCK];
     while (total < header.file_size) {
         if (current_node->left == NULL && current_node->right == NULL) {
             write_bytes(output_file, &current_node->symbol, 1);
@@ -101,8 +100,8 @@ int main(int argc, char **argv) {
     close(input_file);
     delete_tree(&root);
     if (statistics) {
-        fprintf(stderr, "Uncompressed file size: %lu bytes\n", header.file_size);
         fprintf(stderr, "Compressed file size: %lu bytes\n", commpressed_size);
+        fprintf(stderr, "Uncompressed file size: %lu bytes\n", header.file_size);
         float quotient = (float) commpressed_size/header.file_size;
         fprintf(stderr, "Space saving: %.2f%%\n", 100 * (1-quotient));
     }
