@@ -10,13 +10,13 @@ OBJECTS  = $(SOURCES:%.c=%.o)
 
 all: encode decode
 
-test: $(OBJECTS)
+test: test.o code.o io.o node.o pq.o stack.o
 	$(CC) -o $@ $^ $(LIBFLAGS)
 
-encode: $(OBJECTS)
+encode: encode.o huffman.o code.o io.o node.o pq.o stack.o
 	$(CC) -o $@ $^ $(LIBFLAGS)
 
-decode: $(OBJECTS)
+decode: decode.o huffman.o code.o io.o node.o pq.o stack.o
 	$(CC) -o $@ $^ $(LIBFLAGS)
 
 clean:

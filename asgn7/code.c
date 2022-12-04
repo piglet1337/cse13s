@@ -72,7 +72,7 @@ bool code_pop_bit(Code *c, uint8_t *bit) {
 
 //prints out c->bits in hex
 void code_print(Code *c) {
-    for (int i = 0; i < MAX_CODE_SIZE; i += 1) {
+    for (uint32_t i = 0; i < c->top; i += 1) {
         printf("%" PRIx8, c->bits[i]);
     }
 }

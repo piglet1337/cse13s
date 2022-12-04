@@ -6,7 +6,11 @@
 #include <unistd.h>
 
 //define static Code c
-static Code c = {0,{0}};
+static Code c = {
+    0,
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+// static Code c = {0, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 //Builds the tree using the given histogram and returns the root node
 Node *build_tree(uint64_t hist[static ALPHABET]) {
